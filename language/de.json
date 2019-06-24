@@ -1,0 +1,93 @@
+{
+  "language": "Deutsch",
+  "error": {
+    "name": "Fehler",
+    "bot_not_kb_allow":"Der Bot hat nicht die notigen Rechte für die notwendige Kanboard Aktion.",
+    "user_not_allowed":"Du hast leider nicht die richtigen Zugriffsrechte!",
+    "load_bot":"Fehler: Kanboard nicht ladbar.",
+    "cmd_lists_no":"Keine Listen verfügbar. Nutze /list zur Erstellung.",
+    "cmd_list_no":"Keine Listen verfügbar.",
+    "server":"Server Fehler."
+  },
+  "done":"Erledigt.",
+  "delete":"Lösche",
+  "processing":"Verarbeite...",
+  "access_rights":"Du hast Zugriffsrechte.",
+  "start": {
+    "message":"KB-Bot einsatzbereit.",
+    "welcome":"Willkommen!"
+  },
+  "cmd": {
+    "cmd_lists":{
+      "usage":"NICHT IMPLEMENTIERT",
+      "lists":"*Listen:*"
+    },
+    "cmd_list":{
+      "usage":"Nutzung: /list _name_",
+      "exist":"Liste existiert bereits.",
+      "name":"Name",
+      "reserved":"ist nicht erlaubt (reserviert).",
+      "created":"Liste erstellt:"
+    },
+    "cmd_show":{
+      "usage":"Nutzung: /show _name_",
+      "unknown":"Unbekannte Liste oder Kommunikationsfehler.",
+      "here":"*Bittesehr:*",
+      "error":"Fehler: Abfrage zu lang."
+    },
+    "cmd_todo":{
+      "usage":"Nutzung: /todo _list text_",
+      "unknown":"Unbekannte Liste oder Kommunikationsfehler."
+    },
+    "cmd_delete":{
+      "usage":"Nutzung: /delete _list_",
+      "unknown":"Unbekannte Liste oder Kommunikationsfehler."
+    },
+    "cmd_details":{
+      "usage":"Nutzung: /details _id_",
+      "no_task":"Keine solche Aufgabe oder KB-Bot hat keine Rechte für die Funktion getTask().",
+      "no_subtask":"Keine solche Unteraufgabe oder KB-Bot hat keine Rechte für die Funktion getAllSubtasks().",
+      "here":"Hier sind ein paar Details für die ID",
+      "title":"*Titel:*",
+      "description":"*Beschreibung:*",
+      "subtasks":"*Unteraufgabe(n):*",
+      "subid":"Sub-ID",
+      "projid":"*Projekt-ID:*",
+      "owner":"*Besitzer:*",
+      "creator":"*Ersteller:*",
+      "none":"KEINE(R)",
+      "url":"*URL:*",
+      "linktext":"Link",
+      "error":"Fehler: Abfrage zu lang."
+    },
+    "cmd_done":{
+      "usage":"Nutzung: /done _id_",
+      "no_task":"Keine solche Aufgabe oder KB-Bot hat keine Rechte für die Funktion closeTask()."
+    },
+    "cmd_updateGroups":{
+      "usage":"NICHT IMPLEMENTIERT",
+      "updated":"Alle Nutzergruppen aktualisiert."
+    },
+    "cmd_test_permission":{
+      "test":"Dies ist ein Zugriffstest.",
+      "id":"Deine ID:"
+    },
+    "cmd_add_id":{
+      "usage":"Nutzung: /addid _type_ _id_ \n (type kann _group_, _user_ oder _admin_ sein)",
+      "updated":"Alle Nutzergruppen aktualisiert.",
+      "unknown":"Unbekannter Typ.",
+      "saved":"Gespeichert",
+      "to":"zu",
+      "error":"Fehler beim Schreiben der Konfiguration!"
+    },
+    "cmd_join":{
+      "no_join":"Du hast leider keine Rechte beizutreten!",
+      "error_group":"Dies ist eine Gruppe...\nGruppen können nicht automatisch beitreten. Bitte den Administrator kontaktieren.",
+      "error_write":"Fehler beim Schreiben der Konfiguration!"
+    },
+    "cmd_update_rights":{
+      "delete":"*Lösche: *",
+      "error_write":"Fehler beim Schreiben der Konfiguration!"
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "language": "English",
+  "error": {
+    "name": "Error",
+    "bot_not_kb_allow":"Bot is not allowed for necessary Kanboard action.",
+    "user_not_allowed":"Sorry, you have NO access rights!",
+    "load_bot":"Error loading kanboard.",
+    "cmd_lists_no":"No lists stored, use /list to create.",
+    "cmd_list_no":"No lists available.",
+    "server":"Server error."
+  },
+  "done":"Done.",
+  "delete":"Delete",
+  "processing":"Processing...",
+  "access_rights":"You have access rights.",
+  "start": {
+    "message":"KB-Bot reporting for duty.",
+    "welcome":"Welcome!"
+  },
+  "cmd": {
+    "cmd_lists":{
+      "usage":"NOT IMPLEMENTED",
+      "lists":"*Lists:*"
+    },
+    "cmd_list":{
+      "usage":"Usage: /list _name_",
+      "exist":"List already exists.",
+      "name":"Name",
+      "reserved":"is not allowed (reserved).",
+      "created":"List created:"
+    },
+    "cmd_show":{
+      "usage":"Usage: /show _name_",
+      "unknown":"Unknown list or communication error.",
+      "here":"*Here you go:*",
+      "error":"Error: Request to long."
+    },
+    "cmd_todo":{
+      "usage":"Usage: /todo _list text_",
+      "unknown":"Unknown list or communication error."
+    },
+    "cmd_delete":{
+      "usage":"Usage: /delete _list_",
+      "unknown":"Unknown list or communication error."
+    },
+    "cmd_details":{
+      "usage":"Usage: /details _id_",
+      "no_task":"No such task or KB-Bot is not allowed to getTask().",
+      "no_subtask":"No such subtask or KB-Bot is not allowed to getAllSubtasks().",
+      "here":"Here are some details for ID",
+      "title":"*Title:*",
+      "description":"*Description:*",
+      "subtasks":"*Subtasks:*",
+      "subid":"Sub-ID",
+      "projid":"*Project-ID:*",
+      "owner":"*Owner:*",
+      "creator":"*Creator:*",
+      "none":"NONE",
+      "url":"*URL:*",
+      "linktext":"Link",
+      "error":"Error: Request to long."
+    },
+    "cmd_done":{
+      "usage":"Usage: /done _id_",
+      "no_task":"No such task or KB-Bot is not allowed to closeTask()."
+    },
+    "cmd_updateGroups":{
+      "usage":"NOT IMPLEMENTED",
+      "updated":"Updated all User-Groups."
+    },
+    "cmd_test_permission":{
+      "test":"This is a access test.",
+      "id":"Your ID:"
+    },
+    "cmd_add_id":{
+      "usage":"Usage: /addid _type_ _id_ \n (type could be _group_, _user_ or _admin_)",
+      "updated":"Updated all User-Groups.",
+      "unknown":"Unknown type.",
+      "saved":"Saved",
+      "to":"to",
+      "error":"Error writing configuration!"
+    },
+    "cmd_join":{
+      "no_join":"Sorry, you have NO rights to join!",
+      "error_group":"This is a Group...\nGroups can't join automatically. Please contact administrator.",
+      "error_write":"Error writing configuration!"
+    },
+    "cmd_update_rights":{
+      "delete":"*Delete: *",
+      "error_write":"Error writing configuration!"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "bot": {
+    "name": "KB-Bot",
+    "lang_file": "language/en.json"
+  },
+  "kb": {
+    "url": "https://URL/kanboard/jsonrpc.php",
+    "user": "USERNAME",
+    "passwd": "PASSWORD",
+    "default_group": "AllMembers"
+  },
+  "telegram": {
+    "api-key": "API_KEY",
+    "disable-web-page-preview": "True",
+    "granted_group": [
+      -1234
+    ],
+    "granted_user": [
+      2345
+    ],
+    "granted_user_admin": [
+      3456
+    ],
+    "maingroup-id": -1234
+  }
+}
