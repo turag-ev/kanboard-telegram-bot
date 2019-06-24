@@ -26,9 +26,10 @@ https://pypi.org/project/kanboard/
 
 ### Additional Packages
 
-> pip install requests
+None.
 
-Sorry, if something is missing. Please make a Pull-Request or open an Issue if something is missing.
+Sorry, if something is missing.
+Please make a Pull-Request or open an Issue if something is missing.
 
 # Configuration
 To configure your Bot, please make a copy of *default_config.json* and name it *config.json* or change the name in *bot.py* according to your filename:
