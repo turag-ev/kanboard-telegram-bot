@@ -43,12 +43,12 @@ You have to create a Bot via the *BotFather* described here: https://core.telegr
 At the end you will receive a api-key which have to be placed in your *config.json*.
 
 ### Kanboard-Configuration
-You will need a User with a (hopefully) strong password.
-The use most of the actions out of the Kanboard-API, it needs Administrator-rights.
+You will need a seperate Bot-User with a (hopefully) strong password.
+Most of the actions out of the Kanboard-API need Administrator-rights.
 Please add the login-informations and the kanboard-url to your config.
 Also create a group in which all your users will be placed, after you/they excecute the command */updategroups* and place the name in your config.
-(I personally need this feature, to give access to all Kanboard-Projects with the rights to this group).
-Cause your config includes the api-key and clearname passwords, I added *config.json* to the gitignore-File. So please don't commit it for your own security.
+(I personally need this feature, to give access to all Kanboard-Projects with rights to this group).
+Cause your config includes the api-key and clearname passwords, I added *config.json* to the gitignore-File. So please don't commit it for your own security!
 
 ### Bot-Configuration
 Please delete the Numbers for *granted_group*, *granted_user*, *granted_user_admin* and *maingroup-id* in your config. They only should show you, in which format the IDs have to be placed (as integers ;) ).
