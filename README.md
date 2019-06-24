@@ -7,3 +7,26 @@ While Telegram-Bots are generally open for everyone, the bot provides security/p
 
 
 # Installation
+I assume, that you're a Telegram-User and have your own Kanboard installed.
+Please install the following:
+
+## Telegram-Bot for Python
+https://python-telegram-bot.org/
+
+## Kanboard for Python
+https://pypi.org/project/kanboard/
+
+## Additional Packages
+
+> pip install requests
+
+Sorry, if something is missing. Please make a Pull-Request or open an Issue if something is missing.
+
+# Configuration
+To configure your Bot, please make a copy of *default_config.json* and name it *config.json* or change the name in *bot.py* to whatever you want:
+> configFile = 'config.json'
+
+## Create a Telegram-Bot
+To use the Bot you need Telegram of course.
+You have to create a Bot via the *BotFather* described here: https://core.telegram.org/bots#6-botfather
+At the end you will receive a api-key which have to be placed in your *config.json*.
