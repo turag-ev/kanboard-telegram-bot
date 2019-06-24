@@ -6,7 +6,7 @@ While Telegram-Bots are generally open for everyone, the bot provides security/p
 Also it's based to be used with groups.
 Especially with one main-group which is the verification for the Bots access rights.
 
-The Bot is currently tested with Python *Python 2.7.15+* and *Kanboard 1.2.9*.
+The Bot is currently tested with *Python 2.7.15+* and *Kanboard 1.2.9*.
 
 # Usage
 Please do the *Installation* and *Configuration* beforehand.
@@ -18,13 +18,13 @@ I assume, that you're a Telegram-User and have your own Kanboard installed.
 
 Please install the following:
 
-## Telegram-Bot for Python
+##### Telegram-Bot for Python
 https://python-telegram-bot.org/
 
-## Kanboard for Python
+##### Kanboard for Python
 https://pypi.org/project/kanboard/
 
-## Additional Packages
+##### Additional Packages
 
 > pip install requests
 
@@ -36,13 +36,13 @@ To configure your Bot, please make a copy of *default_config.json* and name it *
 
 Tip: Don't commit your config, if you're forking this repo.
 
-## Create a Telegram-Bot
+##### Create a Telegram-Bot
 To use the Bot you need Telegram of course.
 You have to create a Bot via the *BotFather* described here: https://core.telegram.org/bots#6-botfather
 
 At the end you will receive a api-key which have to be placed in your *config.json*.
 
-## Kanboard-Configuration
+##### Kanboard-Configuration
 You will need a User with a (hopefully) strong password.
 The use most of the actions out of the Kanboard-API, it needs Administrator-rights.
 Please add the login-informations and the kanboard-url to your config.
@@ -50,7 +50,7 @@ Also create a group in which all your users will be placed, after you/they excec
 (I personally need this feature, to give access to all Kanboard-Projects with the rights to this group).
 Cause your config includes the api-key and clearname passwords, I added *config.json* to the gitignore-File. So please don't commit it for your own security.
 
-## Bot-Configuration
+##### Bot-Configuration
 Please delete the Numbers for *granted_group*, *granted_user*, *granted_user_admin* and *maingroup-id* in your config. They only should show you, in which format the IDs have to be placed (as integers ;) ).
 I hope they wont collide with existing IDs, so please delete them to make your Bot secure.
 
