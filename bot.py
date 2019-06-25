@@ -376,6 +376,8 @@ def cmd_details(bot, update, args = []):
         return
     todo=args.pop()
 
+    sendMessage(bot, update, lang["processing"])
+
     try:
         users = kb.getAllUsers()
     except:
@@ -409,8 +411,13 @@ def cmd_details(bot, update, args = []):
             else:
                 msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':* '+ subtasks[int(st)]["title"] + '\n'
 
+    try:
+        project = kb.getProjectById(project_id=int(task["project_id"]))
+    except:
+        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+
     msg += '\n'
-    msg += lang["cmd"]["cmd_details"]["projid"] + " " + task["project_id"] + '\n'
+    msg += lang["cmd"]["cmd_details"]["projid"] + " " + project["name"] + " (" + task["project_id"] + ')\n'
 
     cur_owner_id = task["owner_id"]
 

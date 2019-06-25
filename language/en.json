@@ -52,7 +52,7 @@
       "description":"*Description:*",
       "subtasks":"*Subtasks:*",
       "subid":"Sub-ID",
-      "projid":"*Project-ID:*",
+      "projid":"*Project (ID):*",
       "owner":"*Owner:*",
       "creator":"*Creator:*",
       "none":"NONE",
