@@ -398,6 +398,13 @@ def cmd_details(bot, update, args = []):
 
     msg = '*' + lang["cmd"]["cmd_details"]["here"] + " " + task["id"] + '*\n'
     msg += lang["cmd"]["cmd_details"]["title"] + " " + task["title"] + '\n'
+
+    if int(task["is_active"]) is 1:
+        status = lang["cmd"]["cmd_details"]["active"]
+    else:
+        status = lang["cmd"]["cmd_details"]["closed"]
+
+    msg += lang["cmd"]["cmd_details"]["status"] + " " + status + '\n'
     msg += '\n'
     msg += lang["cmd"]["cmd_details"]["description"] + " " + task["description"] + '\n'
     msg += '\n'

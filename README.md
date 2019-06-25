@@ -72,7 +72,7 @@ Now everything should be setted up.
 Execute */reloadconfig* and your Bot should work like described in chapter *Usage*.
 
 # Known Bugs
-Kanboard-API doesn't handle mutated vowel quite well.
+Kanboard-API doesn't handle Umlaute quite well.
 
 Overall code-structure isn't ideal yet.
 
