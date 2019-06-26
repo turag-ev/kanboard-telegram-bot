@@ -6,7 +6,7 @@ While Telegram-Bots are generally open for everyone, the bot provides security/p
 Also it's based to be used with groups.
 Especially with one main-group which is the verification for the Bots access rights.
 
-The Bot is currently tested with *Python 2.7.15+* and *Kanboard 1.2.9*.
+The Bot is currently tested with *Python 3.6.8* and *Kanboard 1.2.9 and 1.2.10*.
 
 # Usage
 Please do the *Installation* and *Configuration* beforehand.

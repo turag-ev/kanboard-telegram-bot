@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #MIT License
@@ -27,9 +27,8 @@
 
 import logging
 import json
-import urllib2
+import requests			# simple http requests
 import os
-import commands
 import copy
 from datetime import datetime
 from telegram.ext import Updater
@@ -714,6 +713,6 @@ dispatcher.add_handler(join_handler)
 dispatcher.add_handler(update_rights_handler)
 
 updater.start_polling()
-raw_input("Press any key to exit...")
+input("Press any key to exit...")
 updater.stop()
 exit()
