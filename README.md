@@ -59,7 +59,7 @@ Cause you deleted the four numbers, nobody has rights to the bot.
 
 Let's check it together:
 Start the bot with
-> python bot.py
+> python3 bot.py
 
 and start the bot in Telegram.
 It should show you, that you don't have any access rights.
