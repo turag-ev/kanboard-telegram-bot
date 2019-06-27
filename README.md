@@ -71,6 +71,13 @@ Do the same to your Bot, which is member of your main-group and place the ID (it
 Now everything should be setted up.
 Execute */reloadconfig* and your Bot should work like described in chapter *Usage*.
 
+# Docker setup
+Build and tag image:
+> docker build . -t kanboard-telegram-bot
+
+Run container and mount config to /var/bot-data
+> docker run -it --rm --mount src=[directory of config.json],target=/var/bot-data,type=bind kanboard-telegram-bot
+
 # Known Bugs
 Kanboard-API doesn't handle Umlaute quite well.
 
