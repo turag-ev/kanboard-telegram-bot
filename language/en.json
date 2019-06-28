@@ -91,6 +91,38 @@
     "cmd_update_rights":{
       "delete":"*Delete: *",
       "error_write":"Error writing configuration!"
+    },
+    "cmd_help":{
+      "general":[
+        "*{} Usage:*",
+        "*/start* - Start the bot.",
+        "*/lists* - Show all available lists.",
+        "*/list* _name_ - Create a new list called _name_.",
+        "*/todo* _list text_ - Create a new todo in _list_.",
+        "*/show* _list_ - Show todos in _list_.",
+        "*/show* _all_ - Show all todos.",
+        "*/done* _id_ - Finish todo _id_.",
+        "*/details* _id_ - Show details of todo _id_.",
+        "*/updategroups* - Add users to default-group.",
+        "*/delete* _list_ - Disable _list_ and all its todos.",
+        "*/help* - Display this message."
+      ],
+      "admin":[
+        "*Admin-Features:*",
+        "*/testpermission* - Test permissions and show ID (works for everyone).",
+        "*/addid* _type_ _id_ - Add new Telegram _id_ as _type_",
+        "               (type could be group, user or admin).",
+        "*/reloadconfig* - Reload the config. Includes permissions.",
+        "*/join* - Only usable for new members. Don't add their ID manually again!",
+        "*/updaterights* - Removes users, which are not in maingroup anymore!"
+      ],
+      "no_permission":[
+        "*{} Usage:*",
+        "Not allowed for you!\n",
+        "Your ID is: {}",
+        "*/help* - Display this message.",
+        "*/join* - Join if you're worthy."
+      ]
     }
   }
 }
