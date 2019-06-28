@@ -91,6 +91,38 @@
     "cmd_update_rights":{
       "delete":"*Lösche: *",
       "error_write":"Fehler beim Schreiben der Konfiguration!"
+    },
+    "cmd_help":{
+      "general":[
+        "*{} Nutzung:*",
+        "*/start* - Startet den Bot.",
+        "*/lists* - Zeigt alle verfügbaren Listen.",
+        "*/list* _name_ - Erstellt eine neue Liste mit dem Namen _name_.",
+        "*/todo* _list text_ - Erstellt ein neues Todo in _list_.",
+        "*/show* _list_ - Zeigt Todos in _list_.",
+        "*/show* _all_ - Zeigt alle Todos.",
+        "*/done* _id_ - Beendet Todo _id_.",
+        "*/details* _id_ - Zeigt Details vom Todo _id_.",
+        "*/updategroups* - Fügt Nutzer zur Default-Gruppe hinzu.",
+        "*/delete* _list_ - Deaktiviert _list_ und all seine Todos.",
+        "*/help* - Zeigt diese Nachricht."
+      ],
+      "admin":[
+        "*Admin-Features:*",
+        "*/testpermission* - Testet die Berechtigungen und zeigt ID (funktioniert bei jedem).",
+        "*/addid* _type_ _id_ - Fügt neuen Telegram _id_ als _type_ hinzu",
+        "               (der Typ kann group, user oder admin sein).",
+        "*/reloadconfig* - Lädt die Konfiguration. Beinhaltet auch Berechtigungen.",
+        "*/join* - Nur für neue Mitglieder nutzbar. Die ID darf manuell nicht erneut hinzugefügt werden!",
+        "*/updaterights* - Entfernt Nutzer, die nicht mehr in der Hauptgruppe sind!"
+      ],
+      "no_permission":[
+        "*{} Nutzung:*",
+        "Du hast keine Berechtigung!\n",
+        "Deine ID ist: {}",
+        "*/help* - Zeigt diese Nachricht.",
+        "*/join* - Fügt dich hinzu, wenn du berechtigt bist."
+      ]
     }
   }
 }

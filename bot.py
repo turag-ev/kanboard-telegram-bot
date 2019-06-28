@@ -45,8 +45,9 @@ def load_language_json():
     try:
         with open(str(languageFile)) as json_data_file:
             lang = json.load(json_data_file)
-    except:
+    except Exception as e:
         print("Can't open language-file or syntax-error!")
+        print(e)
         exit()
     return
 
@@ -87,6 +88,9 @@ def reload_json():
 
     load_language_json()
     return
+
+def getMultilineStr(lines):
+    return "\n".join(lines)
 
 #####################################
 
@@ -645,37 +649,19 @@ def cmd_update_rights(bot, update):
 #####################################
 #help
 def cmd_help(bot, update):
-    msg = "*" +str(bot_name) + " Usage:*\n"
-    msg += "*/start* - Start the bot.\n"
-    msg += "*/lists* - Show all available lists.\n"
-    msg += "*/list* _name_ - Create a new list called _name_.\n"
-    msg += "*/todo* _list text_ - Create a new todo in _list_.\n"
-    msg += "*/show* _list_ - Show todos in _list_.\n"
-    msg += "*/show* _all_ - Show all todos.\n"
-    msg += "*/done* _id_ - Finish todo _id_.\n"
-    msg += "*/details* _id_ - Show details of todo _id_.\n"
-    msg += "*/updategroups* - Add users to default-group.\n"
-    msg += "*/delete* _list_ - Disable _list_ and all its todos.\n"
-    msg += "*/help* - Display this message.\n\n"
+    if has_permission(bot, update):
+        # General commands
+        msg = getMultilineStr(lang["cmd"]["cmd_help"]["general"]).format(bot_name)
+        msg += "\n\n"
 
-    if is_admin(bot, update):
-        msg += "*Admin-Features:*\n"
-        msg += "*/testpermission* - Test permissions and show ID (Works for everyone).\n"
-        msg += "*/addid* _type_ _id_ - Add new Telegram _id_ as _type_\n"
-        msg += "               (type could be group, user or admin).\n"
-        msg += "*/reloadconfig* - Reload the config. Includes permissions.\n"
-        msg += "*/join* - Only usable for new members. Don't add their ID manually again!\n"
-        msg += "*/updaterights* - Removes users, which are not in maingroup anymore!\n"
-
-    if not has_permission(bot, update):
+        if is_admin(bot, update):
+            # Admin commands
+            msg += getMultilineStr(lang["cmd"]["cmd_help"]["admin"])
+    else:
+        # No permission
         chat_id = update.message.chat_id
-
-        msg = "*" +str(bot_name) + " Usage:*\n"
-        msg += "Not allowed for you!\n\n"
-        msg += "Your ID is: " + str(chat_id) + "\n"
-        msg += "*/help* - Display this message.\n"
-        msg += "*/join* - Join if you're worthy.\n"
-
+        msg = getMultilineStr(lang["cmd"]["cmd_help"]["no_permission"]).format(bot_name, chat_id)
+    
     sendMessage(bot, update, msg)
 
 
