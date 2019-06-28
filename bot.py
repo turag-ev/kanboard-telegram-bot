@@ -39,6 +39,10 @@ configFile = 'config.json'
 
 #####################################
 
+ignore = 'robots.txt'
+
+#####################################
+
 def load_language_json():
     global lang
 
@@ -186,7 +190,7 @@ def cmd_lists(bot, update):
     msg = lang["cmd"]["cmd_lists"]["lists"] + '\n'
 
     for k in range(0, len(projects)):
-        msg += '*' + 'ID ' + projects[int(k)]["id"] + ':* '+ projects[int(k)]["name"] + '\n'
+        msg += '*' + 'ID ' + projects[int(k)]["id"] + ':* '+ projects[int(k)]["name"] + ' *(' + projects[int(k)]["identifier"] + ')*\n'
 
     sendMessage(bot, update, msg)
     return
@@ -198,13 +202,14 @@ def cmd_list(bot, update, args = []):
         sendMessage(bot, update, lang["error"]["user_not_allowed"])
         return
 
-    if len(args) != 1:
+    if len(args) < 2:
         sendMessage(bot, update, lang["cmd"]["cmd_list"]["usage"])
         return
 
-    list_name = args.pop()
-    if list_name == "all":      # reserved keyword to display all todo lists at once with /show all
-        sendMessage(bot, update, lang["cmd"]["cmd_list"]["name"] + " " + list_name + " " + lang["cmd"]["cmd_list"]["reserved"])
+    identifier_name = args.pop(0)
+    list_name = ' '.join(args)
+    if identifier_name == "all":      # reserved keyword to display all todo lists at once with /show all
+        sendMessage(bot, update, lang["cmd"]["cmd_list"]["name"] + " " + identifier_name + " " + lang["cmd"]["cmd_list"]["reserved"])
         return
 
     try:
@@ -214,7 +219,7 @@ def cmd_list(bot, update, args = []):
         return
 
     for k in range(0, len(projects)):
-        if list_name == projects[int(k)]["name"]:
+        if identifier_name.upper() == projects[int(k)]["identifier"]:
             sendMessage(bot, update, lang["cmd"]["cmd_list"]["exist"])
             return
 
@@ -225,8 +230,8 @@ def cmd_list(bot, update, args = []):
         return
 
     try:
-        cur_project_id = kb.createProject(name=list_name,owner_id=my_user_id)
-        sendMessage(bot, update, lang["cmd"]["cmd_list"]["created"] + " " + list_name)
+        cur_project_id = kb.createProject(name=list_name,identifier=identifier_name,owner_id=my_user_id)
+        sendMessage(bot, update, lang["cmd"]["cmd_list"]["created"] + " " + list_name + ' (' + identifier_name +')')
     except:
         sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
         return
@@ -262,8 +267,10 @@ def cmd_show(bot, update, args = []):
 
     try:
         if not list_name == "all":
-            projects = kb.get_ProjectByName(name=list_name)
+            projects = kb.get_ProjectByIdentifier(identifier=list_name)
             project_id = projects["id"]
+            project_name = projects["name"]
+            project_identifier = projects["identifier"]
         else:
             sendMessage(bot, update, lang["processing"])
             projects = kb.get_my_projects()
@@ -287,22 +294,25 @@ def cmd_show(bot, update, args = []):
         for k in range(0, len(projects)):
             cur_project_id = projects[int(k)]["id"]
             cur_list_name = projects[int(k)]["name"]
+            cur_project_identifier = projects[int(k)]["identifier"]
+            cur_description = projects[int(k)]["description"]
             tasks = kb.get_AllTasks(project_id=cur_project_id, status_id=1) #status_id=1 for active tasks. Otherwise =0
 
-            msg += '*' + cur_list_name + '*\n'
-            for t in range(0, len(tasks)):
-                cur_owner_id = tasks[int(t)]["owner_id"]
+            if ignore != cur_description:
+                msg += '*' + cur_list_name + ' (' + cur_project_identifier + ')*\n'
+                for t in range(0, len(tasks)):
+                    cur_owner_id = tasks[int(t)]["owner_id"]
 
-                if int(cur_owner_id) is not 0:
-                    for u in range(0, len(users)):
-                        if users[int(u)]["id"] == cur_owner_id:
-                            msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + ' _(' + users[int(u)]["name"] + ')_' + '\n'
-                            break
-                else:
-                    msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + '\n'
-            msg += '\n'
+                    if int(cur_owner_id) is not 0:
+                        for u in range(0, len(users)):
+                            if users[int(u)]["id"] == cur_owner_id:
+                                msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + ' _(' + users[int(u)]["name"] + ')_' + '\n'
+                                break
+                    else:
+                        msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + '\n'
+                msg += '\n'
     else:
-        msg = '*' + list_name + '*\n'
+        msg = '*' + project_name + ' (' + project_identifier + ')*\n'
         tasks = kb.get_AllTasks(project_id=project_id, status_id=1) #status_id=1 for active tasks. Otherwise =0
 
         for t in range(0, len(tasks)):
@@ -335,7 +345,7 @@ def cmd_todo(bot, update, args = []):
         return
 
     try:
-        project = kb.get_ProjectByName(name=args.pop(0))
+        project = kb.get_ProjectByIdentifier(identifier=args.pop(0))
     except:
         sendMessage(bot, update, lang["cmd"]["cmd_todo"]["unknown"])
         return
@@ -357,7 +367,7 @@ def cmd_delete(bot, update, args = []):
         sendMessage(bot, update, lang["cmd"]["cmd_delete"]["usage"])
         return
     try:
-	    project = kb.get_ProjectByName(name=args.pop())
+	    project = kb.get_ProjectByIdentifier(identifier=args.pop())
     except:
         sendMessage(bot, update, lang["cmd"]["cmd_delete"]["unknown"])
         return

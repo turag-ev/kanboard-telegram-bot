@@ -23,24 +23,24 @@
       "lists":"*Lists:*"
     },
     "cmd_list":{
-      "usage":"Usage: /list _name_",
-      "exist":"List already exists.",
-      "name":"Name",
+      "usage":"Usage: /list _identifier_ _name_",
+      "exist":"List already exists with this _identifier_.",
+      "name":"Identifier",
       "reserved":"is not allowed (reserved).",
-      "created":"List created:"
+      "created":"Project created:"
     },
     "cmd_show":{
-      "usage":"Usage: /show _name_",
+      "usage":"Usage: /show _identifier_",
       "unknown":"Unknown list or communication error.",
       "here":"*Here you go:*",
       "error":"Error: Request to long."
     },
     "cmd_todo":{
-      "usage":"Usage: /todo _list text_",
+      "usage":"Usage: /todo _identifier text_",
       "unknown":"Unknown list or communication error."
     },
     "cmd_delete":{
-      "usage":"Usage: /delete _list_",
+      "usage":"Usage: /delete _identifier_",
       "unknown":"Unknown list or communication error."
     },
     "cmd_details":{
@@ -97,9 +97,9 @@
         "*{} Usage:*",
         "*/start* - Start the bot.",
         "*/lists* - Show all available lists.",
-        "*/list* _name_ - Create a new list called _name_.",
-        "*/todo* _list text_ - Create a new todo in _list_.",
-        "*/show* _list_ - Show todos in _list_.",
+        "*/list* _identifier name_ - Create a new list called _name_ and its unique _identifier_.",
+        "*/todo* _identifier text_ - Create a new todo in project with _identifier_.",
+        "*/show* _identifier_ - Show todos in project with _identifier_.",
         "*/show* _all_ - Show all todos.",
         "*/done* _id_ - Finish todo _id_.",
         "*/details* _id_ - Show details of todo _id_.",

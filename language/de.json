@@ -23,24 +23,24 @@
       "lists":"*Listen:*"
     },
     "cmd_list":{
-      "usage":"Nutzung: /list _name_",
-      "exist":"Liste existiert bereits.",
-      "name":"Name",
+      "usage":"Nutzung: /list _identifier_ _name_",
+      "exist":"Liste mit dem _identifier_ existiert bereits.",
+      "name":"Identifier",
       "reserved":"ist nicht erlaubt (reserviert).",
-      "created":"Liste erstellt:"
+      "created":"Projekt erstellt:"
     },
     "cmd_show":{
-      "usage":"Nutzung: /show _name_",
+      "usage":"Nutzung: /show _identifier_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler.",
       "here":"*Bittesehr:*",
       "error":"Fehler: Abfrage zu lang."
     },
     "cmd_todo":{
-      "usage":"Nutzung: /todo _list text_",
+      "usage":"Nutzung: /todo __identifier text_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler."
     },
     "cmd_delete":{
-      "usage":"Nutzung: /delete _list_",
+      "usage":"Nutzung: /delete _identifier_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler."
     },
     "cmd_details":{
@@ -97,9 +97,9 @@
         "*{} Nutzung:*",
         "*/start* - Startet den Bot.",
         "*/lists* - Zeigt alle verfügbaren Listen.",
-        "*/list* _name_ - Erstellt eine neue Liste mit dem Namen _name_.",
-        "*/todo* _list text_ - Erstellt ein neues Todo in _list_.",
-        "*/show* _list_ - Zeigt Todos in _list_.",
+        "*/list* _identifier name_ - Erstellt eine neue Liste mit dem Namen _name_ und dem eindeutigen _identifier_.",
+        "*/todo* _identifier text_ - Erstellt ein neues Todo in dem Projekt mit dem _identifier_.",
+        "*/show* _identifier_ - Zeigt Todos in Projekt mit dem _identifier_.",
         "*/show* _all_ - Zeigt alle Todos.",
         "*/done* _id_ - Beendet Todo _id_.",
         "*/details* _id_ - Zeigt Details vom Todo _id_.",
