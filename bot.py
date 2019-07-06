@@ -190,7 +190,9 @@ def cmd_lists(bot, update):
     msg = lang["cmd"]["cmd_lists"]["lists"] + '\n'
 
     for k in range(0, len(projects)):
-        msg += '*' + 'ID ' + projects[int(k)]["id"] + ':* '+ projects[int(k)]["name"] + ' *(' + projects[int(k)]["identifier"] + ')*\n'
+        cur_description = projects[int(k)]["description"]
+        if ignore != cur_description:
+            msg += '*' + 'ID ' + projects[int(k)]["id"] + ':* '+ projects[int(k)]["name"] + ' *(' + projects[int(k)]["identifier"] + ')*\n'
 
     sendMessage(bot, update, msg)
     return
@@ -671,7 +673,7 @@ def cmd_help(bot, update):
         # No permission
         chat_id = update.message.chat_id
         msg = getMultilineStr(lang["cmd"]["cmd_help"]["no_permission"]).format(bot_name, chat_id)
-    
+
     sendMessage(bot, update, msg)
 
 
