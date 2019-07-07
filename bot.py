@@ -112,24 +112,27 @@ except:
     print(str(lang["error"]["load_bot"]))
 
 #####################################
+def is_granted(cur_id, cur_list):
+    for e in range(0, len(cur_list)):
+        if int(cur_id) == int(cur_list[e]):
+            return True
+    return False
+
 def has_permission(bot, update):
     access = False
     cur_id = update.message.chat_id
 
-    for g in range(0, len(tg_granted_group)):
-        if int(cur_id) == int(tg_granted_group[g]):
-            access = True
-            return access
+    if is_granted(cur_id, tg_granted_group):
+        access = True
+        return access
 
-    for u in range(0, len(tg_granted_user)):
-        if int(cur_id) == int(tg_granted_user[u]):
-            access = True
-            return access
+    if is_granted(cur_id, tg_granted_user):
+        access = True
+        return access
 
-    for a in range(0, len(tg_granted_user_admin)):
-        if int(cur_id) == int(tg_granted_user_admin[a]):
-            access = True
-            return access
+    if is_granted(cur_id, tg_granted_user_admin):
+        access = True
+        return access
 
     return access
 
@@ -554,29 +557,39 @@ def cmd_add_id(bot, update, args = []):
     cur_type=args.pop(0)
     cur_id=args.pop(0)
     msg = ''
+    existing = True
 
     reload_json()
 
     if cur_type == "group":
-        data["telegram"]["granted_group"].append(int(cur_id))
-        msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+        if not is_granted(cur_id, tg_granted_group):
+            data["telegram"]["granted_group"].append(int(cur_id))
+            msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+            existing = False
     elif cur_type == "user":
-        data["telegram"]["granted_user"].append(int(cur_id))
-        msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+        if not is_granted(cur_id, tg_granted_user):
+            data["telegram"]["granted_user"].append(int(cur_id))
+            msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+            existing = False
     elif cur_type == "admin":
-        data["telegram"]["granted_user_admin"].append(int(cur_id))
-        msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+        if not is_granted(cur_id, tg_granted_admin):
+            data["telegram"]["granted_user_admin"].append(int(cur_id))
+            msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
+            existing = False
     else:
         msg = lang["cmd"]["cmd_add_id"]["unknown"] + '\n'
         msg += lang["cmd"]["cmd_add_id"]["usage"] + '\n'
         sendMessage(bot, update, msg)
         return
 
-    try:
-        with open(configFile, "w") as write_file:
-            json.dump(data, write_file)
-    except:
-        msg = lang["cmd"]["cmd_add_id"]["error"]
+    if not existing:
+        try:
+            with open(configFile, "w") as write_file:
+                json.dump(data, write_file)
+        except:
+            msg = lang["cmd"]["cmd_add_id"]["error"]
+    else:
+        msg = lang["cmd"]["cmd_add_id"]["existing"]
 
     reload_json()
 

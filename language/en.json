@@ -81,7 +81,8 @@
       "unknown":"Unknown type.",
       "saved":"Saved",
       "to":"to",
-      "error":"Error writing configuration!"
+      "error":"Error writing configuration!",
+      "existing":"This ID exists already!"
     },
     "cmd_join":{
       "no_join":"Sorry, you have NO rights to join!",

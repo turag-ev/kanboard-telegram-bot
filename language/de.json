@@ -81,7 +81,8 @@
       "unknown":"Unbekannter Typ.",
       "saved":"Gespeichert",
       "to":"zu",
-      "error":"Fehler beim Schreiben der Konfiguration!"
+      "error":"Fehler beim Schreiben der Konfiguration!",
+      "existing":"Diese ID existiert bereits!"
     },
     "cmd_join":{
       "no_join":"Du hast leider keine Rechte beizutreten!",
