@@ -424,7 +424,11 @@ def cmd_details(bot, update, args = []):
 
     msg += lang["cmd"]["cmd_details"]["status"] + " " + status + '\n'
     msg += '\n'
-    msg += lang["cmd"]["cmd_details"]["description"] + " " + task["description"] + '\n'
+    msg += lang["cmd"]["cmd_details"]["description"] + '\n'
+
+    if task["description"] is not None:
+        msg += task["description"] + '\n'
+
     msg += '\n'
 
     msg += lang["cmd"]["cmd_details"]["subtasks"] + " " + '\n'
