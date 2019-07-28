@@ -72,10 +72,4 @@ Now everything should be setted up.
 Execute */reloadconfig* and your Bot should work like described in chapter *Usage*.
 
 # Known Bugs
-Kanboard-API doesn't handle Umlaute quite well.
-
 Overall code-structure isn't ideal yet.
-
-Command */addid* has no verification right now. Use it carefully! Duplications of user-IDs could occur.
-
-Help menu has no language-support right now.
