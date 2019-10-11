@@ -35,6 +35,12 @@
       "here":"*Bittesehr:*",
       "error":"Fehler: Abfrage zu lang."
     },
+    "cmd_activity":{
+      "usage":"Nutzung: /log _identifier_",
+      "unknown":"Unbekannte Liste oder Kommunikationsfehler.",
+      "here":"*Bittesehr:*",
+      "error":"Fehler: Abfrage zu lang."
+    },
     "cmd_todo":{
       "usage":"Nutzung: /todo __identifier text_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler."
@@ -102,6 +108,8 @@
         "*/todo* _identifier text_ - Erstellt ein neues Todo in dem Projekt mit dem _identifier_.",
         "*/show* _identifier_ - Zeigt Todos in Projekt mit dem _identifier_.",
         "*/show* _all_ - Zeigt alle Todos.",
+        "*/log* _identifier_ - Zeigt Aktivitäten zu einer Liste mit dem _identifier_.",
+        "*/log* _all_ - Zeigt Aktivitäten zu allen Listen/Projekten.",
         "*/done* _id_ - Beendet Todo _id_.",
         "*/details* _id_ - Zeigt Details vom Todo _id_.",
         "*/updategroups* - Fügt Nutzer zur Default-Gruppe hinzu.",

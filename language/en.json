@@ -35,6 +35,12 @@
       "here":"*Here you go:*",
       "error":"Error: Request to long."
     },
+    "cmd_activity":{
+      "usage":"Usage: /log _identifier_",
+      "unknown":"Unknown list or communication error.",
+      "here":"*Here you go:*",
+      "error":"Error: Request to long."
+    },
     "cmd_todo":{
       "usage":"Usage: /todo _identifier text_",
       "unknown":"Unknown list or communication error."
@@ -102,6 +108,8 @@
         "*/todo* _identifier text_ - Create a new todo in project with _identifier_.",
         "*/show* _identifier_ - Show todos in project with _identifier_.",
         "*/show* _all_ - Show all todos.",
+        "*/log* _identifier_ - Shows activities for a a list with _identifier_.",
+        "*/log* _all_ - Shows activities to all lists.",
         "*/done* _id_ - Finish todo _id_.",
         "*/details* _id_ - Show details of todo _id_.",
         "*/updategroups* - Add users to default-group.",

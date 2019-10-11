@@ -357,7 +357,8 @@ def cmd_todo(bot, update, args = []):
 
     try:
         task_id = kb.create_task(project_id=project["id"], title=' '.join(args))
-        sendMessage(bot, update, lang["done"])
+        msg = lang["done"] + " ID: " + str(task_id)
+        sendMessage(bot, update, msg)
     except:
         sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
 
@@ -495,6 +496,60 @@ def cmd_done(bot, update, args = []):
         sendMessage(bot, update, task["title"] +"\n"+lang["done"])
     except:
         sendMessage(bot, update, lang["cmd"]["cmd_done"]["no_task"])
+
+#####################################
+#cmd_activity
+def cmd_activity(bot,update, args = []):
+    if not has_permission(bot, update):
+        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+        return
+
+    if len(args) != 1:
+        sendMessage(bot, update, lang["cmd"]["cmd_activity"]["usage"])
+        return
+    list_name = args.pop()
+
+    sendMessage(bot, update, lang["processing"])
+
+    try:
+        if not list_name == "all":
+            projects = kb.get_ProjectByIdentifier(identifier=list_name)
+            activities = kb.get_ProjectActivity(project_id=projects["id"])
+        else:
+            projects = kb.get_my_projects()
+
+            ids = []
+            for k in range(0, len(projects)):
+                cur_project_id = projects[int(k)]["id"]
+                ids.append(cur_project_id)
+
+            activities = kb.get_ProjectActivities(project_ids=ids)
+    except:
+        sendMessage(bot, update, lang["cmd"]["cmd_activity"]["unknown"])
+        return
+
+    msg = lang["cmd"]["cmd_activity"]["here"] +'\n'
+    out = 0
+
+    for k in range(0, len(activities)):
+        if activities[int(k)]["event_name"] in ["subtask.create","subtask.close","task.create","task.close"]:
+
+            if activities[int(k)]["event_name"] in ["subtask.create","subtask.close"]:
+                title = activities[int(k)]["subtask"]["title"]
+            else:
+                title = activities[int(k)]["task"]["title"]
+
+            msg += '*' + activities[int(k)]["task"]["project_name"] + ':* ' + activities[int(k)]["event_title"] + ' (' + title + ') \n\n'
+            out = out + 1
+
+            if out > 30:
+                break
+
+        #print (activities[int(k)]["event_name"])
+        #print(activities[int(k)])
+        #print("##########################")
+
+    sendMessage(bot, update, msg)
 
 #####################################
 #updateGroups
