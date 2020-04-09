@@ -121,6 +121,7 @@
         "*/testpermission* - Test permissions and show ID (works for everyone).",
         "*/addid* _type_ _id_ - Add new Telegram _id_ as _type_",
         "               (type could be group, user or admin).",
+        "*/showid* - Show all IDs",
         "*/reloadconfig* - Reload the config. Includes permissions.",
         "*/join* - Only usable for new members. Don't add their ID manually again!",
         "*/updaterights* - Removes users, which are not in maingroup anymore!"

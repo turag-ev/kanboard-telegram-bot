@@ -656,6 +656,33 @@ def cmd_add_id(bot, update, args = []):
     return
 
 #####################################
+#cmd_show_id
+def cmd_show_id(bot, update, args = []):
+    if not is_admin(bot, update):
+        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+        return
+
+    reload_json()
+
+    msg = "*Maingroup:*" + "\n"
+    msg += str(tg_maingroup_id) + "\n"
+
+    msg += "\n*Groups:*" + "\n"
+    for g in range(0, len(tg_granted_group)):
+        msg += str(tg_granted_group[g]) + "\n"
+
+    msg += "\n*Admins:*" + "\n"
+    for g in range(0, len(tg_granted_user_admin)):
+        msg += str(tg_granted_user_admin[g]) + "\n"
+
+    msg += "\n*Users:*" + "\n"
+    for g in range(0, len(tg_granted_user)):
+        msg += str(tg_granted_user[g]) + "\n"
+
+    sendMessage(bot, update, msg)
+    return
+
+#####################################
 #cmd_reload_json
 def cmd_reload_json(bot, update):
     if not is_admin(bot, update):
@@ -761,6 +788,7 @@ update_group_handler = CommandHandler('updategroups', cmd_updateGroups)
 help_handler = CommandHandler('help', cmd_help)
 test_permission_handler = CommandHandler('testpermission', cmd_test_permission, pass_args=True)
 add_id_handler = CommandHandler('addid', cmd_add_id, pass_args=True)
+show_id_handler = CommandHandler('showid', cmd_show_id)
 reload_json_handler = CommandHandler('reloadconfig', cmd_reload_json)
 join_handler = CommandHandler('join', cmd_join)
 update_rights_handler = CommandHandler("updaterights" ,cmd_update_rights)
@@ -778,6 +806,7 @@ dispatcher.add_handler(update_group_handler)
 dispatcher.add_handler(help_handler)
 dispatcher.add_handler(test_permission_handler)
 dispatcher.add_handler(add_id_handler)
+dispatcher.add_handler(show_id_handler)
 dispatcher.add_handler(reload_json_handler)
 dispatcher.add_handler(join_handler)
 dispatcher.add_handler(update_rights_handler)
