@@ -100,7 +100,7 @@ def getMultilineStr(lines):
 
 reload_json()
 
-updater = Updater(token=bot_token)
+updater = Updater(token=bot_token, use_context=True)
 dispatcher = updater.dispatcher
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
