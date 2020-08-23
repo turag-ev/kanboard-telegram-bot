@@ -33,7 +33,8 @@ import copy
 from datetime import datetime
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
-from kanboard import Kanboard
+import kanboard
+import random
 
 configFile = 'config.json'
 
@@ -107,7 +108,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 #connect to kanboard
 try:
-    kb = Kanboard(kb_url , kb_user, kb_pw)
+    kb = kanboard.Client(kb_url , kb_user, kb_pw)
 except:
     print(str(lang["error"]["load_bot"]))
 
@@ -118,7 +119,7 @@ def is_granted(cur_id, cur_list):
             return True
     return False
 
-def has_permission(bot, update):
+def has_permission(update, context):
     access = False
     cur_id = update.message.chat_id
 
@@ -136,7 +137,7 @@ def has_permission(bot, update):
 
     return access
 
-def is_admin(bot, update):
+def is_admin(update, context):
     access = False
     cur_id = update.message.chat_id
 
@@ -161,33 +162,33 @@ def is_group_member(bot, group_id, user_id):
 
     return is_member
 
-def sendMessage(bot, update, msg):
-    bot.send_message(chat_id=update.message.chat_id, text=str(msg), parse_mode="Markdown")
+def sendMessage(update, context, msg):
+    context.bot.send_message(chat_id=update.message.chat_id, text=str(msg), parse_mode="Markdown")
     return
 
 #####################################
 # Functions for commands:
 #####################################
 #start
-def cmd_start(bot, update):
-    sendMessage(bot, update, lang["start"]["message"])
-    cmd_help(bot, update)
+def cmd_start(update ,context):
+    sendMessage(update, context, lang["start"]["message"])
+    cmd_help(update, context)
 
 #####################################
 #lists
-def cmd_lists(bot, update):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_lists(update, context):
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     try:
         projects = kb.get_my_projects()
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     if len(projects) == 0:
-        sendMessage(bot, update, lang["error"]["cmd_lists_no"])
+        sendMessage(update, context, lang["error"]["cmd_lists_no"])
         return
 
     msg = lang["cmd"]["cmd_lists"]["lists"] + '\n'
@@ -197,48 +198,49 @@ def cmd_lists(bot, update):
         if ignore != cur_description:
             msg += '*' + 'ID ' + projects[int(k)]["id"] + ':* '+ projects[int(k)]["name"] + ' *(' + projects[int(k)]["identifier"] + ')*\n'
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
     return
 
 #####################################
 #list
-def cmd_list(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_list(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) < 2:
-        sendMessage(bot, update, lang["cmd"]["cmd_list"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_list"]["usage"])
         return
 
     identifier_name = args.pop(0)
     list_name = ' '.join(args)
     if identifier_name == "all":      # reserved keyword to display all todo lists at once with /show all
-        sendMessage(bot, update, lang["cmd"]["cmd_list"]["name"] + " " + identifier_name + " " + lang["cmd"]["cmd_list"]["reserved"])
+        sendMessage(update, context, lang["cmd"]["cmd_list"]["name"] + " " + identifier_name + " " + lang["cmd"]["cmd_list"]["reserved"])
         return
 
     try:
         projects = kb.get_my_projects()
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     for k in range(0, len(projects)):
         if identifier_name.upper() == projects[int(k)]["identifier"]:
-            sendMessage(bot, update, lang["cmd"]["cmd_list"]["exist"])
+            sendMessage(update, context, lang["cmd"]["cmd_list"]["exist"])
             return
 
     try:
         my_user_id = kb.getMe()["id"]
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
         cur_project_id = kb.createProject(name=list_name,identifier=identifier_name,owner_id=my_user_id)
-        sendMessage(bot, update, lang["cmd"]["cmd_list"]["created"] + " " + list_name + ' (' + identifier_name +')')
+        sendMessage(update, context, lang["cmd"]["cmd_list"]["created"] + " " + list_name + ' (' + identifier_name +')')
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
@@ -249,24 +251,25 @@ def cmd_list(bot, update, args = []):
                 cur_group_id = groups[int(g)]["id"]
                 break
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
         kb.addProjectGroup(project_id=cur_project_id, group_id=cur_group_id)
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
 #####################################
 #show
-def cmd_show(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_show(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) != 1:
-        sendMessage(bot, update, lang["cmd"]["cmd_show"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_show"]["usage"])
         return
     list_name = args.pop()
 
@@ -277,20 +280,20 @@ def cmd_show(bot, update, args = []):
             project_name = projects["name"]
             project_identifier = projects["identifier"]
         else:
-            sendMessage(bot, update, lang["processing"])
+            sendMessage(update, context, lang["processing"])
             projects = kb.get_my_projects()
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_show"]["unknown"])
+        sendMessage(update, context, lang["cmd"]["cmd_show"]["unknown"])
         return
 
     if len(projects) == 0:
-        sendMessage(bot, update, lang["error"]["cmd_list_no"])
+        sendMessage(update, context, lang["error"]["cmd_list_no"])
         return
 
     try:
         users = kb.getAllUsers()
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     if list_name == "all":
@@ -334,85 +337,88 @@ def cmd_show(bot, update, args = []):
 
 
     try:
-        bot.send_message(chat_id=update.message.chat_id, disable_web_page_preview=tg_web_prev, text=msg, parse_mode="Markdown")
+        context.bot.send_message(chat_id=update.message.chat_id, disable_web_page_preview=tg_web_prev, text=msg, parse_mode="Markdown")
     except:
-        bot.send_message(chat_id=update.message.chat_id, text=lang["cmd"]["cmd_show"]["error"])
+        context.bot.send_message(chat_id=update.message.chat_id, text=lang["cmd"]["cmd_show"]["error"])
 
 #####################################
 #todo
-def cmd_todo(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_todo(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) < 2:
-        sendMessage(bot, update, lang["cmd"]["cmd_todo"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_todo"]["usage"])
         return
 
     try:
         project = kb.get_ProjectByIdentifier(identifier=args.pop(0))
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_todo"]["unknown"])
+        sendMessage(update, context, lang["cmd"]["cmd_todo"]["unknown"])
         return
 
     try:
         task_id = kb.create_task(project_id=project["id"], title=' '.join(args))
         msg = lang["done"] + " ID: " + str(task_id)
-        sendMessage(bot, update, msg)
+        sendMessage(update, context, msg)
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
 
 #####################################
 #delete
-def cmd_delete(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_delete(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) != 1:
-        sendMessage(bot, update, lang["cmd"]["cmd_delete"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_delete"]["usage"])
         return
     try:
 	    project = kb.get_ProjectByIdentifier(identifier=args.pop())
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_delete"]["unknown"])
+        sendMessage(update, context, lang["cmd"]["cmd_delete"]["unknown"])
         return
     try:
         kb.disableProject(project_id=project["id"])
-        sendMessage(bot, update, lang["done"])
+        sendMessage(update, context, lang["done"])
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
 
 #####################################
 #details
-def cmd_details(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_details(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) != 1:
-        sendMessage(bot, update, lang["cmd"]["cmd_details"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_details"]["usage"])
         return
     todo=args.pop()
 
-    sendMessage(bot, update, lang["processing"])
+    sendMessage(update, context, lang["processing"])
 
     try:
         users = kb.getAllUsers()
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
         task = kb.getTask(task_id=todo)
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_details"]["no_task"])
+        sendMessage(update, context, lang["cmd"]["cmd_details"]["no_task"])
         return
 
     try:
         subtasks = kb.getAllSubtasks(task_id=todo)
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_details"]["no_subtask"])
+        sendMessage(update, context, lang["cmd"]["cmd_details"]["no_subtask"])
         return
 
     msg = '*' + lang["cmd"]["cmd_details"]["here"] + " " + task["id"] + '*\n'
@@ -444,7 +450,7 @@ def cmd_details(bot, update, args = []):
     try:
         project = kb.getProjectById(project_id=int(task["project_id"]))
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
 
     msg += '\n'
     msg += lang["cmd"]["cmd_details"]["projid"] + " " + project["name"] + " (" + task["project_id"] + ')\n'
@@ -474,42 +480,44 @@ def cmd_details(bot, update, args = []):
     msg += lang["cmd"]["cmd_details"]["url"] + ' [' + lang["cmd"]["cmd_details"]["linktext"] + ']('+ task["url"] + ') \n'
 
     try:
-        bot.send_message(chat_id=update.message.chat_id, disable_web_page_preview=tg_web_prev, text=msg, parse_mode="Markdown")
+        context.bot.send_message(chat_id=update.message.chat_id, disable_web_page_preview=tg_web_prev, text=msg, parse_mode="Markdown")
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_details"]["error"])
+        sendMessage(update, context, lang["cmd"]["cmd_details"]["error"])
 
 #####################################
 #done
-def cmd_done(bot, update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_done(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) != 1:
-        sendMessage(bot, update, lang["cmd"]["cmd_done"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_done"]["usage"])
         return
     todo=args.pop()
 
     try:
         kb.closeTask(task_id=todo)
         task = kb.getTask(task_id=todo)
-        sendMessage(bot, update, task["title"] +"\n"+lang["done"])
+        sendMessage(update, context, task["title"] +"\n"+lang["done"])
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_done"]["no_task"])
+        sendMessage(update, context, lang["cmd"]["cmd_done"]["no_task"])
 
 #####################################
 #cmd_activity
-def cmd_activity(bot,update, args = []):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_activity(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     if len(args) != 1:
-        sendMessage(bot, update, lang["cmd"]["cmd_activity"]["usage"])
+        sendMessage(update, context, lang["cmd"]["cmd_activity"]["usage"])
         return
     list_name = args.pop()
 
-    sendMessage(bot, update, lang["processing"])
+    sendMessage(update, context, lang["processing"])
 
     try:
         if not list_name == "all":
@@ -525,7 +533,7 @@ def cmd_activity(bot,update, args = []):
 
             activities = kb.get_ProjectActivities(project_ids=ids)
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_activity"]["unknown"])
+        sendMessage(update, context, lang["cmd"]["cmd_activity"]["unknown"])
         return
 
     msg = lang["cmd"]["cmd_activity"]["here"] +'\n'
@@ -549,18 +557,18 @@ def cmd_activity(bot,update, args = []):
         #print(activities[int(k)])
         #print("##########################")
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
 
 #####################################
 #updateGroups
-def cmd_updateGroups(bot, update):
-    if not has_permission(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_updateGroups(update, context):
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     reload_json()
 
-    sendMessage(bot, update, lang["processing"])
+    sendMessage(update, context, lang["processing"])
 
     try:
         groups = kb.getAllGroups()
@@ -570,13 +578,13 @@ def cmd_updateGroups(bot, update):
                 cur_group_id = groups[int(g)]["id"]
                 break
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
         users = kb.getAllUsers()
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
         return
 
     try:
@@ -584,33 +592,35 @@ def cmd_updateGroups(bot, update):
             cur_user_id = users[int(u)]["id"]
             if not kb.isGroupMember(group_id=cur_group_id,user_id=cur_user_id):
                 kb.addGroupMember(group_id=cur_group_id,user_id=cur_user_id)
-        sendMessage(bot, update, lang["cmd"]["cmd_updateGroups"]["updated"])
+        sendMessage(update, context, lang["cmd"]["cmd_updateGroups"]["updated"])
     except:
-        sendMessage(bot, update, lang["error"]["bot_not_kb_allow"])
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
 
 #####################################
 #test permissions
-def cmd_test_permission(bot, update, args = []):
-    sendMessage(bot, update, lang["cmd"]["cmd_test_permission"]["test"])
-    sendMessage(bot, update, lang["cmd"]["cmd_test_permission"]["id"] + " " + str(update.message.chat_id))
+def cmd_test_permission(update, context):
+    args = context.args
+    sendMessage(update, context, lang["cmd"]["cmd_test_permission"]["test"])
+    sendMessage(update, context, lang["cmd"]["cmd_test_permission"]["id"] + " " + str(update.message.chat_id))
 
-    if has_permission(bot, update):
-        sendMessage(bot, update, lang["access_rights"])
+    if has_permission(update, context):
+        sendMessage(update, context, lang["access_rights"])
     else:
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
     return
 
 #####################################
 #cmd_add_id
-def cmd_add_id(bot, update, args = []):
-    if not is_admin(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_add_id(update, context):
+    args = context.args
+    if not is_admin(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
 
     if len(args) != 2:
         msg = lang["cmd"]["cmd_add_id"]["usage"]
-        sendMessage(bot, update, msg)
+        sendMessage(update, context, msg)
         return
 
     cur_type=args.pop(0)
@@ -631,14 +641,14 @@ def cmd_add_id(bot, update, args = []):
             msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
             existing = False
     elif cur_type == "admin":
-        if not is_granted(cur_id, tg_granted_admin):
+        if not is_granted(cur_id, tg_granted_user_admin):
             data["telegram"]["granted_user_admin"].append(int(cur_id))
             msg = lang["cmd"]["cmd_add_id"]["saved"] + " " + str(cur_id) + " " + lang["cmd"]["cmd_add_id"]["to"] + " " + str(cur_type)
             existing = False
     else:
         msg = lang["cmd"]["cmd_add_id"]["unknown"] + '\n'
         msg += lang["cmd"]["cmd_add_id"]["usage"] + '\n'
-        sendMessage(bot, update, msg)
+        sendMessage(update, context, msg)
         return
 
     if not existing:
@@ -652,14 +662,15 @@ def cmd_add_id(bot, update, args = []):
 
     reload_json()
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
     return
 
 #####################################
 #cmd_show_id
-def cmd_show_id(bot, update, args = []):
-    if not is_admin(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_show_id(update, context):
+    args = context.args
+    if not is_admin(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     reload_json()
@@ -679,34 +690,35 @@ def cmd_show_id(bot, update, args = []):
     for g in range(0, len(tg_granted_user)):
         msg += str(tg_granted_user[g]) + "\n"
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
     return
 
 #####################################
 #cmd_reload_json
-def cmd_reload_json(bot, update):
-    if not is_admin(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_reload_json(update, context):
+    args = context.args
+    if not is_admin(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     reload_json()
 
-    sendMessage(bot, update, lang["done"])
+    sendMessage(update, context, lang["done"])
     return
 
 #####################################
 #cmd_join
-def cmd_join(bot, update):
-    if has_permission(bot, update):
-        sendMessage(bot, update, lang["access_rights"])
+def cmd_join(update, context):
+    if has_permission(update, context):
+        sendMessage(update, context, lang["access_rights"])
         return
 
     if update.message.chat_id <= 0:
-        sendMessage(bot, update, lang["cmd"]["cmd_join"]["error_group"])
+        sendMessage(update, context, lang["cmd"]["cmd_join"]["error_group"])
         return
 
-    if not is_group_member(bot, tg_maingroup_id, update.message.chat_id):
-        sendMessage(bot, update, lang["cmd"]["cmd_join"]["no_join"])
+    if not is_group_member(context.bot, tg_maingroup_id, update.message.chat_id):
+        sendMessage(update, context, lang["cmd"]["cmd_join"]["no_join"])
         return
 
     reload_json()
@@ -717,19 +729,19 @@ def cmd_join(bot, update):
         with open(configFile, "w") as write_file:
             json.dump(data, write_file)
     except:
-        sendMessage(bot, update, lang["cmd"]["cmd_join"]["error_write"])
+        sendMessage(update, context, lang["cmd"]["cmd_join"]["error_write"])
         return
 
     reload_json()
 
-    sendMessage(bot, update, lang["start"]["welcome"])
+    sendMessage(update, context, lang["start"]["welcome"])
     return
 
 #####################################
 #cmd_update_rights
-def cmd_update_rights(bot, update):
-    if not is_admin(bot, update):
-        sendMessage(bot, update, lang["error"]["user_not_allowed"])
+def cmd_update_rights(update, context):
+    if not is_admin(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
         return
 
     reload_json()
@@ -739,7 +751,7 @@ def cmd_update_rights(bot, update):
     before_tg_granted_user = copy.copy(tg_granted_user)
 
     for u in range(len(before_tg_granted_user)-1, 0, -1):
-        if not is_group_member(bot, tg_maingroup_id, before_tg_granted_user[u]):
+        if not is_group_member(context.bot, tg_maingroup_id, before_tg_granted_user[u]):
             data["telegram"]["granted_user"].pop(u)
             msg += lang["cmd"]["cmd_update_rights"]["delete"] + " " + str(before_tg_granted_user[u]) + '\n'
 
@@ -753,19 +765,19 @@ def cmd_update_rights(bot, update):
 
     reload_json()
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
     return
 
 #####################################
 #####################################
 #help
-def cmd_help(bot, update):
-    if has_permission(bot, update):
+def cmd_help(update, context):
+    if has_permission(update, context):
         # General commands
         msg = getMultilineStr(lang["cmd"]["cmd_help"]["general"]).format(bot_name)
         msg += "\n\n"
 
-        if is_admin(bot, update):
+        if is_admin(update, context):
             # Admin commands
             msg += getMultilineStr(lang["cmd"]["cmd_help"]["admin"])
     else:
@@ -773,7 +785,7 @@ def cmd_help(bot, update):
         chat_id = update.message.chat_id
         msg = getMultilineStr(lang["cmd"]["cmd_help"]["no_permission"]).format(bot_name, chat_id)
 
-    sendMessage(bot, update, msg)
+    sendMessage(update, context, msg)
 
 
 start_handler = CommandHandler('start', cmd_start)
