@@ -311,7 +311,7 @@ def cmd_show(update, context):
                 for t in range(0, len(tasks)):
                     cur_owner_id = tasks[int(t)]["owner_id"]
 
-                    if int(cur_owner_id) is not 0:
+                    if int(cur_owner_id) != 0:
                         for u in range(0, len(users)):
                             if users[int(u)]["id"] == cur_owner_id:
                                 msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + ' _(' + users[int(u)]["name"] + ')_' + '\n'
@@ -326,7 +326,7 @@ def cmd_show(update, context):
         for t in range(0, len(tasks)):
             cur_owner_id = tasks[int(t)]["owner_id"]
 
-            if int(cur_owner_id) is not 0:
+            if int(cur_owner_id) != 0:
                 for u in range(0, len(users)):
                     if users[int(u)]["id"] == cur_owner_id:
                         msg += '*' + 'ID ' + tasks[int(t)]["id"] + ':* '+ tasks[int(t)]["title"] + ' _(' + users[int(u)]["name"] + ')_' + '\n'
@@ -424,7 +424,7 @@ def cmd_details(update, context):
     msg = '*' + lang["cmd"]["cmd_details"]["here"] + " " + task["id"] + '*\n'
     msg += lang["cmd"]["cmd_details"]["title"] + " " + task["title"] + '\n'
 
-    if int(task["is_active"]) is 1:
+    if int(task["is_active"]) == 1:
         status = lang["cmd"]["cmd_details"]["active"]
     else:
         status = lang["cmd"]["cmd_details"]["closed"]
@@ -442,7 +442,7 @@ def cmd_details(update, context):
 
     for st in range(0, len(subtasks)):
         if not int(subtasks[int(st)]["status"]) == 2:
-            if int(subtasks[int(st)]["user_id"]) is not 0:
+            if int(subtasks[int(st)]["user_id"]) != 0:
                 msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':* '+ subtasks[int(st)]["title"] + ' _(' + subtasks[int(st)]["name"] + ')_' + '\n'
             else:
                 msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':* '+ subtasks[int(st)]["title"] + '\n'
@@ -457,7 +457,7 @@ def cmd_details(update, context):
 
     cur_owner_id = task["owner_id"]
 
-    if int(cur_owner_id) is not 0:
+    if int(cur_owner_id) != 0:
         for u in range(0, len(users)):
             if users[int(u)]["id"] == cur_owner_id:
                 msg += lang["cmd"]["cmd_details"]["owner"] + " " + users[int(u)]["name"]  + '\n'
@@ -469,7 +469,7 @@ def cmd_details(update, context):
 
     cur_creator_id = task["creator_id"]
 
-    if int(cur_creator_id) is not 0:
+    if int(cur_creator_id) != 0:
         for u in range(0, len(users)):
             if users[int(u)]["id"] == cur_creator_id:
                 msg += lang["cmd"]["cmd_details"]["creator"] + " " + users[int(u)]["name"]  + '\n'
