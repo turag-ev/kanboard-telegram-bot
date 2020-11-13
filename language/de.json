@@ -10,6 +10,7 @@
     "server":"Server Fehler."
   },
   "done":"Erledigt.",
+  "undone":"Rückgängig.",
   "delete":"Lösche",
   "processing":"Verarbeite...",
   "access_rights":"Du hast Zugriffsrechte.",
@@ -73,6 +74,10 @@
       "usage":"Nutzung: /done _id_",
       "no_task":"Keine solche Aufgabe oder KB-Bot hat keine Rechte für die Funktion closeTask()."
     },
+    "cmd_undone":{
+      "usage":"Nutzung: /undone _id_",
+      "no_task":"Keine solche Aufgabe oder TURAG-Bot hat keine Rechte für die Funktion openTask()."
+    },
     "cmd_updateGroups":{
       "usage":"NICHT IMPLEMENTIERT",
       "updated":"Alle Nutzergruppen aktualisiert."
@@ -103,6 +108,7 @@
       "general":[
         "*{} Nutzung:*",
         "*/start* - Startet den Bot.",
+        "",
         "*/lists* - Zeigt alle verfügbaren Listen.",
         "*/list* _identifier name_ - Erstellt eine neue Liste mit dem Namen _name_ und dem eindeutigen _identifier_.",
         "*/todo* _identifier text_ - Erstellt ein neues Todo in dem Projekt mit dem _identifier_.",
@@ -111,9 +117,11 @@
         "*/log* _identifier_ - Zeigt Aktivitäten zu einer Liste mit dem _identifier_.",
         "*/log* _all_ - Zeigt Aktivitäten zu allen Listen/Projekten.",
         "*/done* _id_ - Beendet Todo _id_.",
+        "*/undone* _id_ - Öffnet Todo todo _id_.",
         "*/details* _id_ - Zeigt Details vom Todo _id_.",
         "*/updategroups* - Fügt Nutzer zur Default-Gruppe hinzu.",
         "*/delete* _list_ - Deaktiviert _list_ und all seine Todos.",
+        "",
         "*/help* - Zeigt diese Nachricht."
       ],
       "admin":[

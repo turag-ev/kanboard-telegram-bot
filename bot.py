@@ -505,6 +505,26 @@ def cmd_done(update, context):
         sendMessage(update, context, lang["cmd"]["cmd_done"]["no_task"])
 
 #####################################
+#undone
+def cmd_undone(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
+        return
+
+    if len(args) != 1:
+        sendMessage(update, context, lang["cmd"]["cmd_undone"]["usage"])
+        return
+    todo=args.pop()
+
+    try:
+        kb.openTask(task_id=todo)
+        task = kb.getTask(task_id=todo)
+        sendMessage(update, context, task["title"] +"\n"+lang["undone"])
+    except:
+        sendMessage(update, context, lang["cmd"]["cmd_undone"]["no_task"])
+
+#####################################
 #cmd_activity
 def cmd_activity(update, context):
     args = context.args
@@ -796,6 +816,7 @@ show_handler = CommandHandler('show', cmd_show, pass_args=True)
 delete_handler = CommandHandler('delete', cmd_delete, pass_args=True)
 details_handler = CommandHandler('details', cmd_details, pass_args=True)
 done_handler = CommandHandler('done', cmd_done, pass_args=True)
+undone_handler = CommandHandler('undone', cmd_undone, pass_args=True)
 update_group_handler = CommandHandler('updategroups', cmd_updateGroups)
 help_handler = CommandHandler('help', cmd_help)
 test_permission_handler = CommandHandler('testpermission', cmd_test_permission, pass_args=True)
@@ -814,6 +835,7 @@ dispatcher.add_handler(show_handler)
 dispatcher.add_handler(delete_handler)
 dispatcher.add_handler(details_handler)
 dispatcher.add_handler(done_handler)
+dispatcher.add_handler(undone_handler)
 dispatcher.add_handler(update_group_handler)
 dispatcher.add_handler(help_handler)
 dispatcher.add_handler(test_permission_handler)
