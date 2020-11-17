@@ -367,6 +367,31 @@ def cmd_todo(update, context):
         sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
 
 #####################################
+#subtask
+def cmd_subtask(update, context):
+    args = context.args
+    if not has_permission(update, context):
+        sendMessage(update, context, lang["error"]["user_not_allowed"])
+        return
+
+    if len(args) < 2:
+        sendMessage(update, context, lang["cmd"]["cmd_subtask"]["usage"])
+        return
+
+    try:
+        task_id = kb.get_Task(task_id=args.pop(0))["id"]
+    except:
+        sendMessage(update, context, lang["cmd"]["cmd_subtask"]["unknown"])
+        return
+
+    try:
+        subtask_id = kb.create_subtask(task_id=task_id, title=' '.join(args))
+        msg = lang["done"] + " Sub-ID: " + str(subtask_id)
+        sendMessage(update, context, msg)
+    except:
+        sendMessage(update, context, lang["error"]["bot_not_kb_allow"])
+
+#####################################
 #delete
 def cmd_delete(update, context):
     args = context.args
@@ -441,11 +466,18 @@ def cmd_details(update, context):
     msg += lang["cmd"]["cmd_details"]["subtasks"] + " " + '\n'
 
     for st in range(0, len(subtasks)):
-        if not int(subtasks[int(st)]["status"]) == 2:
+        status_id = int(subtasks[int(st)]["status"])
+
+        if status_id == 1:
+            status_id_msg = " " + lang["cmd"]["cmd_details"]["wip"]
+        else:
+            status_id_msg = ""
+
+        if status_id != 2:
             if int(subtasks[int(st)]["user_id"]) != 0:
-                msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':* '+ subtasks[int(st)]["title"] + ' _(' + subtasks[int(st)]["name"] + ')_' + '\n'
+                msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':*' + status_id_msg + ' ' + subtasks[int(st)]["title"] + ' _(' + subtasks[int(st)]["name"] + ')_' + '\n'
             else:
-                msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':* '+ subtasks[int(st)]["title"] + '\n'
+                msg += '*' + lang["cmd"]["cmd_details"]["subid"] + " " + subtasks[int(st)]["id"] + ':*' + status_id_msg + ' ' + subtasks[int(st)]["title"] + '\n'
 
     try:
         project = kb.getProjectById(project_id=int(task["project_id"]))
@@ -812,6 +844,7 @@ start_handler = CommandHandler('start', cmd_start)
 lists_handler = CommandHandler('lists', cmd_lists)
 list_handler = CommandHandler('list', cmd_list, pass_args=True)     # list is a reserved word in python!
 todo_handler = CommandHandler('todo', cmd_todo, pass_args=True)
+subtask_handler = CommandHandler('subtask', cmd_subtask, pass_args=True)
 show_handler = CommandHandler('show', cmd_show, pass_args=True)
 delete_handler = CommandHandler('delete', cmd_delete, pass_args=True)
 details_handler = CommandHandler('details', cmd_details, pass_args=True)
@@ -831,6 +864,7 @@ dispatcher.add_handler(start_handler)
 dispatcher.add_handler(lists_handler)
 dispatcher.add_handler(list_handler)
 dispatcher.add_handler(todo_handler)
+dispatcher.add_handler(subtask_handler)
 dispatcher.add_handler(show_handler)
 dispatcher.add_handler(delete_handler)
 dispatcher.add_handler(details_handler)

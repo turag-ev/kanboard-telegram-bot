@@ -46,6 +46,10 @@
       "usage":"Nutzung: /todo __identifier text_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler."
     },
+    "cmd_subtask":{
+      "usage":"Nutzung: /subtask _id text_",
+      "unknown":"Unbekannter Todo oder Kommunikationsfehler."
+    },
     "cmd_delete":{
       "usage":"Nutzung: /delete _identifier_",
       "unknown":"Unbekannte Liste oder Kommunikationsfehler."
@@ -62,6 +66,7 @@
       "status":"*Status:*",
       "active":"Offen",
       "closed":"Abgeschlossen",
+      "wip":"*WIP*",
       "projid":"*Projekt (ID):*",
       "owner":"*Besitzer:*",
       "creator":"*Ersteller:*",
@@ -112,6 +117,7 @@
         "*/lists* - Zeigt alle verfügbaren Listen.",
         "*/list* _identifier name_ - Erstellt eine neue Liste mit dem Namen _name_ und dem eindeutigen _identifier_.",
         "*/todo* _identifier text_ - Erstellt ein neues Todo in dem Projekt mit dem _identifier_.",
+        "*/subtask* _id text_ - Erstellt eine neue Unteraugabe für ein Todo _id_.",
         "*/show* _identifier_ - Zeigt Todos in Projekt mit dem _identifier_.",
         "*/show* _all_ - Zeigt alle Todos.",
         "*/log* _identifier_ - Zeigt Aktivitäten zu einer Liste mit dem _identifier_.",
